@@ -1,13 +1,14 @@
+import sys
 import time
-import src.config as config
 
 
 class Session():
-    def __init__(self):
+    def __init__(self, *filepaths):
         try:
-            inactivity_period_file = open(config.INACTIVITY_FILE_PATH, "r")
+            inactivity_period_file = open(filepaths[0], "r")
             self.timeout = int(inactivity_period_file.read())
-            self.input_log_path = config.INPUT_LOG_PATH
+            self.input_log_path = filepaths[1]
+            self.output_path = filepaths[2]
             self.all_sessions = None
         except:
             raise
@@ -79,11 +80,17 @@ class Session():
 
         self.all_sessions = all_sessions
 
+    def log_sessions(self):
+        with open(self.output_path, 'w') as f:
+            f.writelines(f"{session}\n" for session in self.all_sessions)
+
+
 def main():
-    session = Session()
+    filepaths = sys.argv[1:]
+    session = Session(*filepaths)
     session.compute_session()
-    for s in session.all_sessions:
-        print(s)
+    session.log_sessions()
+
 
 if __name__ == '__main__':
     main()
