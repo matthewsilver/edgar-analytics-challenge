@@ -1,4 +1,4 @@
-# edgar-analytics-challenge
+# Edgar Analytics Session Analysis
 
 ### Overview
 
